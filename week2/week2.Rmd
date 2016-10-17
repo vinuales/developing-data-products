@@ -1,0 +1,40 @@
+---
+title: "Week 2 Assignment"
+author: "David Viñuales"
+date: "16 de octubre de 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+
+mmData <- read.csv("result.csv")
+
+library(leaflet)
+
+```
+
+## MediaMarkt Map
+
+MediaMarkt's Spain stores map and site link:
+
+```{r showMap, echo=FALSE}
+
+mmIcon <- makeIcon(
+  iconUrl = "http://www.mediamarkt.es/favicon-32x32.png",
+  iconWidth = 31*215/230, iconHeight = 31,
+  iconAnchorX = 31*215/230/2, iconAnchorY = 31
+)
+
+mmShops <- data.frame(
+  lat = c(mmData$LAT),
+  long = c(mmData$LONG)
+)
+
+mmSites <- paste("Open store ","<a target='_blank' href='",mmData$URL,"'>",mmData$Name,"</a>")
+
+mmShops %>%
+ leaflet() %>%
+ addTiles() %>%
+ addMarkers(icon = mmIcon, popup = mmSites, clusterOptions = markerClusterOptions())
+
+```
